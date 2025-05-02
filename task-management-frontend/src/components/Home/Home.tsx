@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BiTrash } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
@@ -47,6 +46,12 @@ const Home = () => {
         prev_page_url: null,
     });
 
+    const imageUrl =
+        window.location.origin ===
+        "https://task-management-app-iox9.onrender.com"
+            ? "https://task-management-app-iox9.onrender.com"
+            : "http://localhost:8000";
+
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
     const authHeader = { headers: { Authorization: `Bearer ${token}` } };
@@ -93,10 +98,8 @@ const Home = () => {
 
     const toggleDraftStatus = async (task: Task) => {
         try {
-            const response = await axios.patch(
-                `http://localhost:8000/api/tasks/${task.id}/toggle-draft`,
-                {},
-                authHeader
+            const response = await axiosInstance.patch(
+                `/tasks/${task.id}/toggle-draft`
             );
             setTasks((prev) =>
                 prev.map((t) =>
@@ -168,7 +171,7 @@ const Home = () => {
                                 >
                                     {task.image_path && (
                                         <img
-                                            src={`http://localhost:8000/storage/${task.image_path}`}
+                                            src={`${imageUrl}/storage/${task.image_path}`}
                                             alt="Task"
                                             className="w-32 h-32 object-cover rounded"
                                         />
