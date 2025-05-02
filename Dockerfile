@@ -34,4 +34,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 80
 
-CMD ["bash", "-c", "ln -sf /etc/secrets/.env .env && php artisan key:generate && php artisan config:cache && php artisan view:clear && apache2-foreground"]
+CMD ["bash", "-c", "ln -sf /etc/secrets/.env .env && php artisan key:generate && php artisan storage:link && php artisan config:cache && php artisan view:clear && apache2-foreground"]
