@@ -32,4 +32,7 @@ RUN cd task-management-frontend && npm install && npm run build && cp -r dist/* 
 # Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
+# Before EXPOSE 80, add this:
+COPY /etc/secrets/.env .env
+
 EXPOSE 80
