@@ -14,6 +14,9 @@ WORKDIR /var/www/html
 # Copy source code
 COPY . .
 
+# Copy .env.example into .env
+RUN cp .env.example .env
+
 # Set Apache DocumentRoot to /var/www/html/public
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
