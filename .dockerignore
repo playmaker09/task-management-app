@@ -1,0 +1,4 @@
+node_modules
+task-management-frontend/node_modules
+vendor
+.git
