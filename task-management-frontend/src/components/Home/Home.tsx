@@ -53,14 +53,11 @@ const Home = () => {
             : "http://localhost:8000";
 
     const navigate = useNavigate();
-    const token = localStorage.getItem("token");
-    const authHeader = { headers: { Authorization: `Bearer ${token}` } };
 
     const fetchTasks = useCallback(async () => {
         try {
             setLoading(true);
             const response = await axiosInstance.get("/tasks", {
-                ...authHeader,
                 params: {
                     page,
                     search: search,
@@ -88,7 +85,7 @@ const Home = () => {
     const handleDelete = async (id: number) => {
         if (!confirm("Are you sure you want to delete this task?")) return;
         try {
-            await axiosInstance.delete(`/tasks/${id}`, authHeader);
+            await axiosInstance.delete(`/tasks/${id}`);
             setTasks((prev) => prev.filter((task) => task.id !== id));
             toast.success("Task deleted successfully.");
         } catch {
@@ -116,10 +113,9 @@ const Home = () => {
 
     const updateStatus = async (task: Task, newStatus: string) => {
         try {
-            const response = await axios.patch(
+            const response = await axiosInstance.patch(
                 `/tasks/${task.id}/update-status`,
-                { status: newStatus },
-                authHeader
+                { status: newStatus }
             );
             setTasks((prev) =>
                 prev.map((t) =>
