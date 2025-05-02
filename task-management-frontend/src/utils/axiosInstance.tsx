@@ -3,10 +3,13 @@ import axios from "axios";
 
 // Determine environment-specific API base URL
 const isProd =
+    window.location.origin === "https://task-management-app-iox9.onrender.com/";
+
+const isProdFrontend =
     window.location.origin === "https://task-management-app-iox9.onrender.com";
 
 const axiosInstance = axios.create({
-    baseURL: isProd
+    baseURL: isProdFrontend
         ? import.meta.env.VITE_API_PROD_URL
         : import.meta.env.VITE_API_DEV_URL,
     headers: {
