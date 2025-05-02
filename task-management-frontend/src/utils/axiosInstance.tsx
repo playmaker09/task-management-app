@@ -1,13 +1,14 @@
 // src/utils/axiosInstance.ts
 import axios from "axios";
 
+// Dynamically set baseURL without relying on env vars
 const isProdFrontend =
     window.location.origin === "https://task-management-app-iox9.onrender.com";
 
 const axiosInstance = axios.create({
     baseURL: isProdFrontend
-        ? import.meta.env.VITE_API_PROD_URL
-        : import.meta.env.VITE_API_DEV_URL,
+        ? `${window.location.origin}/api`
+        : import.meta.env.VITE_API_DEV_URL, // still use env for dev
     headers: {
         "Content-Type": "application/json",
     },
