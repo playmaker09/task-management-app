@@ -34,9 +34,4 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 80
 
-# 👇 This is where to place the CMD block
-CMD ln -sf /etc/secrets/.env .env && \
-    php artisan key:generate && \
-    php artisan config:cache && \
-    php artisan view:clear && \
-    apache2-foreground
+CMD ["bash", "-c", "ln -sf /etc/secrets/.env .env && php artisan key:generate && php artisan config:cache && php artisan view:clear && apache2-foreground"]
