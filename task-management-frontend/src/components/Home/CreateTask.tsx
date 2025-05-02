@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AiFillLeftCircle } from "react-icons/ai";
+import axiosInstance from "../../utils/axiosInstance";
 const CreateTask = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
@@ -28,7 +28,7 @@ const CreateTask = () => {
 
             const token = localStorage.getItem("token");
 
-            await axios.post("http://localhost:8000/api/tasks", formData, {
+            await axiosInstance.post("/tasks", formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "multipart/form-data",

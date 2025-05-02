@@ -9,7 +9,7 @@ import TopButtons from "./TopButtons";
 import TableFilters from "./Datatable/TableFilters";
 import TablePerPage from "./Datatable/TablePerPage";
 import TablePrevNextButtons from "./Datatable/TablePrevNextButtons";
-
+import axiosInstance from "../../utils/axiosInstance";
 interface Task {
     id: number;
     user_id: number;
@@ -54,19 +54,16 @@ const Home = () => {
     const fetchTasks = useCallback(async () => {
         try {
             setLoading(true);
-            const response = await axios.get(
-                "http://localhost:8000/api/tasks",
-                {
-                    ...authHeader,
-                    params: {
-                        page,
-                        search: search,
-                        sort_by: sortBy,
-                        per_page: perPage,
-                        ...(statusFilter && { status: statusFilter }),
-                    },
-                }
-            );
+            const response = await axiosInstance.get("/tasks", {
+                ...authHeader,
+                params: {
+                    page,
+                    search: search,
+                    sort_by: sortBy,
+                    per_page: perPage,
+                    ...(statusFilter && { status: statusFilter }),
+                },
+            });
             const records = response.data;
             setTasks(records.data);
             setTableInfo({
@@ -86,10 +83,7 @@ const Home = () => {
     const handleDelete = async (id: number) => {
         if (!confirm("Are you sure you want to delete this task?")) return;
         try {
-            await axios.delete(
-                `http://localhost:8000/api/tasks/${id}`,
-                authHeader
-            );
+            await axiosInstance.delete(`/tasks/${id}`, authHeader);
             setTasks((prev) => prev.filter((task) => task.id !== id));
             toast.success("Task deleted successfully.");
         } catch {
@@ -120,7 +114,7 @@ const Home = () => {
     const updateStatus = async (task: Task, newStatus: string) => {
         try {
             const response = await axios.patch(
-                `http://localhost:8000/api/tasks/${task.id}/update-status`,
+                `/tasks/${task.id}/update-status`,
                 { status: newStatus },
                 authHeader
             );

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { AiFillLeftCircle } from "react-icons/ai";
 
+import { AiFillLeftCircle } from "react-icons/ai";
+import axiosInstance from "../../utils/axiosInstance";
 const EditTask = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -18,15 +18,7 @@ const EditTask = () => {
     useEffect(() => {
         const fetchTask = async () => {
             try {
-                const token = localStorage.getItem("token");
-                const res = await axios.get(
-                    `http://localhost:8000/api/tasks/${id}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+                const res = await axiosInstance.get(`/tasks/${id}`);
 
                 const task = res.data.data;
                 setTitle(task.title);
@@ -54,18 +46,11 @@ const EditTask = () => {
             formData.append("is_draft", isDraft ? "1" : "0");
             if (image) formData.append("image", image);
 
-            const token = localStorage.getItem("token");
-
-            await axios.post(
-                `http://localhost:8000/api/tasks/${id}?_method=PUT`,
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
+            await axiosInstance.post(`tasks/${id}?_method=PUT`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
 
             navigate("/");
         } catch (err: any) {

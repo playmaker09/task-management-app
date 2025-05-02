@@ -1,9 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 
 import { FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosInstance";
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
@@ -17,13 +17,10 @@ const Login = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post(
-                "http://localhost:8000/api/login",
-                {
-                    email,
-                    password,
-                }
-            );
+            const response = await axiosInstance.post("/login", {
+                email,
+                password,
+            });
 
             if (response.data.is_success) {
                 localStorage.setItem("token", response.data.token);
@@ -31,13 +28,12 @@ const Login = () => {
             }
         } catch (err: any) {
             setError(
-                err.response.data.message || "An unexpected error occurred."
+                err.response?.data?.message || "An unexpected error occurred."
             );
         } finally {
             setLoading(false);
         }
     };
-
     return (
         <div className="min-h-screen flex items-center justify-center px-4">
             <form

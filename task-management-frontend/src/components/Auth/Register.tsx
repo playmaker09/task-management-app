@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../utils/axiosInstance";
 const Register = () => {
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -19,15 +19,12 @@ const Register = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post(
-                "http://localhost:8000/api/register",
-                {
-                    name: name,
-                    email: email,
-                    password: password,
-                    password_confirmation: confirmPassword,
-                }
-            );
+            const response = await axiosInstance.post("/register", {
+                name: name,
+                email: email,
+                password: password,
+                password_confirmation: confirmPassword,
+            });
 
             if (response.data.is_success) {
                 alert(response.data.message);
