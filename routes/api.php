@@ -24,3 +24,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/tasks/{id}', [TaskController::class, 'update']);
     Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
 });
+
+Route::get('/debug-storage', function () {
+    return response()->json([
+        'link_exists' => file_exists(public_path('storage')),
+        'example_url' => asset('storage/task_images/sample.jpg'),
+    ]);
+});
