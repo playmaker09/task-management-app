@@ -33,19 +33,10 @@ const Register = () => {
                 alert(response.data.message);
                 navigate("/login");
             }
-        } catch (err: unknown) {
-            const axiosError = err as AxiosError<any>;
-
-            const errorData = axiosError.response?.data;
-
-            if (Array.isArray(errorData)) {
-                const messages = errorData
-                    .map((e: any) => `${e.field}: ${e.message}`)
-                    .join(" ");
-                setError(messages);
-            } else {
-                setError(errorData?.message || "An unexpected error occurred.");
-            }
+        } catch (err: any) {
+            setError(
+                err.response.data.message || "An unexpected error occurred."
+            );
         } finally {
             setLoading(false);
         }
