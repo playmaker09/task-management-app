@@ -14,9 +14,6 @@ WORKDIR /var/www/html
 # Copy source code
 COPY . .
 
-# Copy .env.example into .env
-RUN cp .env.example .env
-
 # Set Apache DocumentRoot to /var/www/html/public
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
 
@@ -32,7 +29,7 @@ RUN cd task-management-frontend && npm install && npm run build && cp -r dist/* 
 # Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# Before EXPOSE 80, add this:
-COPY /etc/secrets/.env .env
+# Runtime command: symlink .env from secret and start Apache
+CMD ln -sf /etc/secrets/.env .env && apache2-foreground
 
 EXPOSE 80
