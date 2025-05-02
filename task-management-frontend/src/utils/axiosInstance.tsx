@@ -7,8 +7,8 @@ const isProdFrontend =
 
 const axiosInstance = axios.create({
     baseURL: isProdFrontend
-        ? `${window.location.origin}/api`
-        : import.meta.env.VITE_API_DEV_URL, // still use env for dev
+        ? `https://task-management-app-iox9.onrender.com/api`
+        : `http://localhost:8000/api`, // still use env for dev
     headers: {
         "Content-Type": "application/json",
     },
