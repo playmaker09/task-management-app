@@ -1,10 +1,6 @@
 // src/utils/axiosInstance.ts
 import axios from "axios";
 
-// Determine environment-specific API base URL
-const isProd =
-    window.location.origin === "https://task-management-app-iox9.onrender.com/";
-
 const isProdFrontend =
     window.location.origin === "https://task-management-app-iox9.onrender.com";
 
